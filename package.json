@@ -1,0 +1,26 @@
+{
+  "name": "canteen_management_tkmce",
+  "version": "1.0.0",
+  "description": "R5A - AWT PROJECT \r Collaborators:\r -Danish zakariya\r -Abel Tom Augustine\r -Nezil Shah\r -Ayush lall\r -Anish Ramdas",
+  "homepage": "https://github.com/daanizz/Canteen_Management_TKMCE#readme",
+  "bugs": {
+    "url": "https://github.com/daanizz/Canteen_Management_TKMCE/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daanizz/Canteen_Management_TKMCE.git"
+  },
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.1"
+  }
+}
