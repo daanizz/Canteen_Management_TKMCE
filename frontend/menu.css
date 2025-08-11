@@ -85,8 +85,30 @@ header h1 {
   font-size: 16px;
 }
 
+
+.history-btn {
+    position: absolute;
+    top: 20px; 
+    right: 200px; 
+    padding: 12px 18px;
+    background-color: #ffc107;
+    color: black;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+ 
+}
+
+
 .cart-btn {
-  position: fixed;
+  position: absolute;
   top: 20px;
   right: 20px;
   background-color: #ffc107;
