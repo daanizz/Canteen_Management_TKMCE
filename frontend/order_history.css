@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    text-align: center;
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.order-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.order-card h2 {
+    margin-top: 0;
+    color: #28a745;
+}
+.order-card p {
+    margin: 5px 0;
+    color: #666;
+}
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #eee;
+}
+.order-item:last-child {
+    border-bottom: none;
+}
+.rating-stars {
+    color: #ccc;
+    font-size: 1.2em;
+}
+.rating-stars .star {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.rating-stars .star.rated {
+    color: #ffc107;
+}
+.rating-stars .star:hover,
+.rating-stars .star:hover ~ .star {
+    color: #ffc107;
+}
+.empty-history {
+    text-align: center;
+    color: #888;
+}
+.continue-ordering-btn {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+}
