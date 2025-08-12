@@ -16,7 +16,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dan": "node backend/index.js"
+    "dev": "node backend/index.js"
   },
   "dependencies": {
     "dotenv": "^17.2.1",
