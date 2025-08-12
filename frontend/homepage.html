@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Canteen Homepage</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(5px);
+    }
+
+    .dashboard {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar h3 {
+      color: #ffcc80;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .sidebar a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #ff7043;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 30px;
+      background-color: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    .welcome-box {
+      margin-bottom: 30px;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .food-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .card {
+      width: 260px;
+      border-radius: 15px;
+      background-color: rgba(255, 255, 255, 0.2);
+      overflow: hidden;
+      backdrop-filter: blur(3px);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 15px;
+    }
+
+    .card-body h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .card-body p {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    .card-body button {
+      width: 100%;
+      padding: 10px;
+      background-color: #ff7043;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .card-body button:hover {
+      background-color: #ff5722;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    🍽️ Campus Canteen Dashboard
+  </header>
+
+  <div class="dashboard">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+      <h3>👤 Hello, User</h3>
+      <a href="#">🏠 Home</a>
+      <a href="#">📋 Menu</a>
+      <a href="#">🛒 My Orders</a>
+      <a href="#">🧾 Cart</a>
+      <a href="#">⚙️ Settings</a>
+      <a href="#">🚪 Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="welcome-box">
+        <h2>Welcome to Your Personalized Canteen Dashboard!</h2>
+        <p>Order your favorite dishes, track past orders, and enjoy campus food like never before.</p>
+      </div>
+
+      <div class="food-container">
+        <div class="card">
+          <img src="https://source.unsplash.com/400x300/?idli" alt="Idli">
+          <div class="card-body">
+            <h3>Soft Idli</h3>
+            <p>Rs. 30</p>
+            <button>Order Now</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://source.unsplash.com/400x300/?dosa" alt="Dosa">
+          <div class="card-body">
+            <h3>Masala Dosa</h3>
+            <p>Rs. 45</p>
+            <button>Order Now</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://source.unsplash.com/400x300/?vada" alt="Vada">
+          <div class="card-body">
+            <h3>Medu Vada</h3>
+            <p>Rs. 25</p>
+            <button>Order Now</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://source.unsplash.com/400x300/?uttapam" alt="Uttapam">
+          <div class="card-body">
+            <h3>Onion Uttapam</h3>
+            <p>Rs. 40</p>
+            <button>Order Now</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="https://source.unsplash.com/400x300/?pongal" alt="Pongal">
+          <div class="card-body">
+            <h3>Ven Pongal</h3>
+            <p>Rs. 35</p>
+            <button>Order Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+
