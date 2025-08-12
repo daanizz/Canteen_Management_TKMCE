@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p><strong>Status:</strong> ${order.status}</p>
             <hr>
         `;
-
+        
         for (const itemName in order.items) {
             //Adds the item name,quatity and rating
             const item = order.items[itemName];
@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (rating) {
                 const starsContainer = itemElement.querySelector('.rating-stars');
                 const allStars = starsContainer.querySelectorAll('.star');
+                //Adds stylying
                 allStars.forEach(s => {
                     if (parseInt(s.dataset.value) <= rating) {
                         s.classList.add('rated');
@@ -69,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const orderId = starsContainer.dataset.orderId;
 
         saveRating(orderId, itemId, ratingValue);
-
+        //Add color to stars based on selecting or deselecting a rating
         const allStars = starsContainer.querySelectorAll('.star');
         allStars.forEach(s => {
             if (s.dataset.value <= ratingValue) {
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
+//Saves the rating in local storage
 function saveRating(orderId, itemId, rating) {
     let savedRatings = JSON.parse(localStorage.getItem('ratings')) || {};
     const ratingKey = `${orderId}-${itemId}`;
