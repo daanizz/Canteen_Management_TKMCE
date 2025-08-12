@@ -110,23 +110,6 @@ function deleteItem(itemName) {
   }
 }
 
-function proceedToPayment() {
-  const cart = JSON.parse(localStorage.getItem('cart'));
-  if (!cart || Object.keys(cart).length === 0) {
-    alert("Your cart is empty. Please add items before proceeding.");
-    return;
-  }
-
-  // Calculate total
-  const total = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  
-  // Enhanced confirmation
-  if (confirm(`Proceed to pay ₹${total} for your order?`)) {
-    // You can redirect to payment.html here
-    // window.location.href = 'payment.html';
-    alert("Redirecting to payment gateway...");
-  }
-}
 
 // Initialize the cart when page loads
 document.addEventListener('DOMContentLoaded', loadCart);
@@ -151,4 +134,46 @@ function continueOrdering() {
   
   // Redirect to menu.html (cart is preserved)
   window.location.href = "menu.html";
+
+}
+// Function to handle the payment process
+function proceedToPayment() {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    if (!cart || Object.keys(cart).length === 0) {
+        alert("Your cart is empty. Please add items before proceeding.");
+        return;
+    }
+
+    // Retrieve existing order history or initialize a new one
+    let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+
+    // Create a new order object with a timestamp
+    const newOrder = {
+        id: Date.now(), // Unique ID for the order
+        date: new Date().toLocaleDateString(),
+        items: cart,
+        status: 'Paid'
+    };
+
+    // Calculate the total
+    const total = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  
+  // Enhanced confirmation
+  if (confirm(`Proceed to pay ₹${total} for your order?`)) {
+    alert("Payment successful! Redirecting to your order history...");
+
+    // Add the new order to the history
+    orderHistory.push(newOrder);
+
+    // Save the updated history to localStorage
+    localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+
+    // Clear the current cart
+    localStorage.removeItem('cart');
+
+    // Redirect to the order history page
+    window.location.href = 'order_history.html';
+  }
+
+    
 }
