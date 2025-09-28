@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const itemSchema = new mongoose.Schema(
   {
-    itemId: {
-      type: Number,
-      required: true,
-    },
+    // itemId: {
+    //   type: Number,
+    //   required: true,
+    // },
     name: {
       type: String,
       required: true,
@@ -20,6 +20,7 @@ const itemSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Not available", "Available"],
+      default: "Available",
     },
     category: {
       type: String,

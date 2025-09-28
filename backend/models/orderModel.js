@@ -55,16 +55,18 @@ const orderModel = new mongoose.Schema({
     default: "pending",
   },
   readyAt: {
-    type: date,
+    type: Date,
   },
   pickedUpAt: {
-    type: date,
+    type: Date,
   },
   cancelAt: {
-    type: date,
+    type: Date,
   },
   cancelReason: {
     type: String,
     enum: ["Admin cancel", "User cancel", "Time out"],
   },
 });
+
+export default mongoose.model("Order", orderModel);
