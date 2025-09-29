@@ -89,3 +89,5 @@ export const getOrderDetails = async (req, res) => {
     return res.status(500).json({ messsage: error });
   }
 };
+
+export const cancelOrder = async (req, res) => {};
