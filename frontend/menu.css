@@ -180,3 +180,42 @@ header h1 {
   background-color: #055e45;
 }
 
+/* Add to menu.css */
+.error-message, .no-items-message {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.error-message button, .no-items-message button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.item-status {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.item-status.available {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.item-status.not-available {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.add-to-cart:disabled {
+  background: #ccc !important;
+  cursor: not-allowed !important;
+}
