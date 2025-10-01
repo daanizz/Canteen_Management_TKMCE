@@ -1,42 +1,64 @@
 import mongoose from "mongoose";
-
-const userModel=new mongoose.Schema({
+import bcrypt from "bcrypt";
+const userModel = new mongoose.Schema(
+  {
     name: {
-        type:String,
-        required:true,
+      type: String,
+      required: true,
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
-    hashedPassword:{
-        type:String,
-        required:true,
-        unique:true
+    hashedPassword: {
+      type: String,
+      required: true,
+      unique: true,
     },
-    admissionNumber:{
-        type:Number,
-        required:true,
-        unique:true
+    admissionNumber: {
+      type: Number,
+      required: true,
+      unique: true,
     },
-    role:{
-        type:String,
-        required:true,
-        enum:["Student","Accountant","professor","Guest"]
+    role: {
+      type: String,
+      required: true,
+      enum: ["Student", "Accountant", "professor", "Guest"],
     },
-    department:{
-        type:String,
-        required:true,
-        enum:["CSE","ECE","MECH","EEE","CIVIL","CHEM","ARCH","SPORTS","OTHER","MATH","PHYSICS"],
-        default:"OTHER"
-    }
-},
-{
-    timestamps:true
-}
-)
+    department: {
+      type: String,
+      required: true,
+      enum: [
+        "CSE",
+        "ECE",
+        "MECH",
+        "EEE",
+        "CIVIL",
+        "CHEM",
+        "ARCH",
+        "SPORTS",
+        "OTHER",
+        "MATH",
+        "PHYSICS",
+      ],
+      default: "OTHER",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-//bcrypt password hashing middleware to be added here...
+userModel.pre("save", async function (next) {
+  if (!this.isModified("hashedPassword")) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.hashedPassword = await bcrypt.hash(this.hashedPassword, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
-export default userModel=mongoose.model("User",userModel)
+export default userModel = mongoose.model("User", userModel);

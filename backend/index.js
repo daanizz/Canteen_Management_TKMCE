@@ -1,3 +1,4 @@
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 // API Routes
 app.use('/api/items', itemRoutes);
@@ -44,3 +46,4 @@ app.listen(PORT, () => {
     console.log(`Admin Portal: http://localhost:${PORT}/admin`);
     console.log(`API: http://localhost:${PORT}/api/items`);
 });
+
