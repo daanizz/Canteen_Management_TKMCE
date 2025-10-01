@@ -1,0 +1,74 @@
+#payment-box {
+  display: flex;
+  flex-direction: column; /* stack QR then button */
+  align-items: center;    /* center horizontally */
+  justify-content: center;/* center vertically if you give a height */
+  gap: 16px;              /* spacing between QR and button */
+  padding: 50px;
+  border-radius: 12px;
+  background-color: rgb(251, 250, 240);
+  box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+  font-family:Arial, Helvetica, sans-serif;
+  
+}
+
+/* Optional: make the container take full height to truly center vertically */
+html, body {
+  height: 100%;
+  background-color: rgb(231, 245, 240);
+}
+body {
+  display: flex;
+  align-items: center;    /* vertical center page content */
+  justify-content: center;/* horizontal center page content */
+}
+h2{
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  padding-left: 45px;
+}
+
+/* Beautify button */
+.pay-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 20px;
+  background-color:rgb(233, 179, 79);
+  text-decoration: none;
+  color: black;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+}
+.paid-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 20px;
+  background-color:rgb(80, 215, 80);
+  text-decoration: none;
+  color: black;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+}
+.cncl-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 20px;
+  background-color:rgb(242, 97, 97);
+  text-decoration: none;
+  color: black;
+  width: 123px;
+  text-align: center;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+}
+.pay-btn:hover {
+  background-color:rgb(238, 206, 145);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0, 127, 95, 0.3);
+}
+.paid-btn:hover {
+  background-color:rgb(138, 222, 138);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0, 127, 95, 0.3);
+}
+.cncl-btn:hover {
+  background-color:rgb(239, 139, 139);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0, 127, 95, 0.3);
+}

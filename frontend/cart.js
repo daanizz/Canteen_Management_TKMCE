@@ -160,19 +160,14 @@ function proceedToPayment() {
   
   // Enhanced confirmation
   if (confirm(`Proceed to pay ₹${total} for your order?`)) {
-    alert("Payment successful! Redirecting to your order history...");
 
-    // Add the new order to the history
-    orderHistory.push(newOrder);
-
-    // Save the updated history to localStorage
-    localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+    sessionStorage.setItem("pendingOrder", JSON.stringify(newOrder));
 
     // Clear the current cart
     localStorage.removeItem('cart');
 
     // Redirect to the order history page
-    window.location.href = 'order_history.html';
+    window.location.href = `payment.html?amount=${total}`;
   }
 
     
