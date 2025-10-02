@@ -1,119 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sign Up | Canteen App</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      backdrop-filter: blur(10px);
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 15px;
-      padding: 40px 30px;
-      max-width: 450px;
-      width: 100%;
-      text-align: center;
-      color: white;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7);
-    }
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      background-color: rgba(255, 255, 255, 0.2);
-      color: #fff;
-    }
-
-    input::placeholder {
-      color: #e0e0e0;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      background-color: #ff7043;
-      border: none;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #ff5722;
-    }
-
-    p {
-      margin-top: 20px;
-    }
-
-    a {
-      color: #ffd54f;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Signup - Canteen Management</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h2>🧾 Create Your Account</h2>
-    <form onsubmit="return handleSignUp()">
-      <input type="text" id="signup-name" placeholder="Full Name" required />
-      <input type="email" id="signup-email" placeholder="Email" required />
-      <input type="password" id="signup-password" placeholder="Password" required />
-      <input type="password" id="signup-confirm" placeholder="Confirm Password" required />
+  <div class="auth-container">
+    <h1>Create Account</h1>
+    <form id="signupForm">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <input type="number" id="admissionNumber" placeholder="Admission Number" required />
+      
+      <select id="role" required>
+        <option value="">Select Role</option>
+        <option value="Student">Student</option>
+        <option value="Accountant">Accountant</option>
+        <option value="professor">Professor</option>
+        <option value="Guest">Guest</option>
+      </select>
+
+      <select id="department" required>
+        <option value="">Select Department</option>
+        <option value="CSE">CSE</option>
+        <option value="ECE">ECE</option>
+        <option value="MECH">MECH</option>
+        <option value="EEE">EEE</option>
+        <option value="CIVIL">CIVIL</option>
+        <option value="CHEM">CHEM</option>
+        <option value="ARCH">ARCH</option>
+        <option value="SPORTS">SPORTS</option>
+        <option value="MATH">MATH</option>
+        <option value="PHYSICS">PHYSICS</option>
+        <option value="OTHER">OTHER</option>
+      </select>
+
       <button type="submit">Sign Up</button>
-      <p>Already have an account? <a href="signin.html">Sign In</a></p>
     </form>
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+    <div id="signupMessage"></div>
   </div>
 
   <script>
-    function handleSignUp() {
-      const name = document.getElementById('signup-name').value;
-      const email = document.getElementById('signup-email').value;
-      const password = document.getElementById('signup-password').value;
-      const confirm = document.getElementById('signup-confirm').value;
+    document.getElementById("signupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-      if (!name || !email || !password || !confirm) {
-        alert("Please fill in all fields.");
-        return false;
+      const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        admissionNumber: document.getElementById("admissionNumber").value,
+        role: document.getElementById("role").value,
+        department: document.getElementById("department").value
+      };
+
+      try {
+        const res = await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        document.getElementById("signupMessage").innerText = result.message;
+
+        if (res.ok) {
+          setTimeout(() => window.location.href = "login.html", 1500);
+        }
+      } catch (err) {
+        document.getElementById("signupMessage").innerText = "Error: " + err.message;
       }
-
-      if (password !== confirm) {
-        alert("Passwords do not match.");
-        return false;
-      }
-
-      alert("Sign Up successful!");
-      window.location.href = "homepage.html"; // Redirect
-      return false; // prevent actual submission
-    }
+    });
   </script>
 </body>
 </html>
-

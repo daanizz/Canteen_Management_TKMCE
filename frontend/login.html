@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Canteen Management</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="auth-container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p>Don’t have an account? <a href="signup.html">Create one</a></p>
+    <div id="loginMessage"></div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const data = {
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+      };
+
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        document.getElementById("loginMessage").innerText = result.message;
+
+        if (res.ok) {
+          // Save token to localStorage
+          localStorage.setItem("token", result.token);
+          localStorage.setItem("user", JSON.stringify(result.user));
+
+          setTimeout(() => window.location.href = "menu.html", 1000);
+        }
+      } catch (err) {
+        document.getElementById("loginMessage").innerText = "Error: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
