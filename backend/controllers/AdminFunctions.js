@@ -57,6 +57,9 @@ export const updateStatus = async (req, res) => {
     if (changes.category !== undefined && item.category !== changes.category) {
       updates.category = changes.category;
     }
+    if (changes.status !== undefined && item.category !== changes.category) {
+      updates.status = changes.status;
+    }
 
     if (Object.keys(updates).length === 0) {
       return res.status(200).json({ message: "No changes detected" });
@@ -90,4 +93,55 @@ export const getOrderDetails = async (req, res) => {
   }
 };
 
-export const cancelOrder = async (req, res) => {};
+// PUT /orders/:id/status
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, reason } = req.body;
+
+    const order = await orderModel.findById(id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // Validate transitions
+    if (status === "preparing" && order.status !== "pending") {
+      return res
+        .status(400)
+        .json({ message: "Only pending orders can be approved" });
+    }
+
+    if (status === "ready" && order.status !== "preparing") {
+      return res
+        .status(400)
+        .json({ message: "Only preparing orders can be marked ready" });
+    }
+
+    if (status === "pickedup" && order.status !== "ready") {
+      return res
+        .status(400)
+        .json({ message: "Only ready orders can be picked up" });
+    }
+
+    if (status === "cancelled") {
+      if (!reason) {
+        return res.status(400).json({ message: "Cancel reason required" });
+      }
+      order.cancelReason = reason;
+      order.cancelAt = new Date();
+    }
+
+    // Apply status + timestamps
+    order.status = status;
+    if (status === "ready") order.readyAt = new Date();
+    if (status === "pickedup") order.pickedUpAt = new Date();
+
+    await order.save();
+
+    return res
+      .status(200)
+      .json({ message: `Order updated to ${status}`, order });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
