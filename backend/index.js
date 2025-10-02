@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import itemRoutes from './routes/itemRoutes.js';
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use("/api/auth", authRoutes);
 
 // API Routes
 app.use('/api/items', itemRoutes);
@@ -45,5 +47,8 @@ app.listen(PORT, () => {
     console.log(`User Dashboard: http://localhost:${PORT}/menu`);
     console.log(`Admin Portal: http://localhost:${PORT}/admin`);
     console.log(`API: http://localhost:${PORT}/api/items`);
+    console.log(` Auth API: http://localhost:${PORT}/api/auth`);
+    console.log("MONGO_URI =", process.env.MONGO_URI);
+
 });
 
