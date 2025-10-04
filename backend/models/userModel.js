@@ -61,4 +61,4 @@ userModel.pre("save", async function (next) {
   }
 });
 
-export default userModel = mongoose.model("User", userModel);
+export default mongoose.model("User", userModel);

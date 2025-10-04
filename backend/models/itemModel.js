@@ -1,42 +1,49 @@
 import mongoose from "mongoose";
 
-const itemSchema = new mongoose.Schema({
+const itemSchema = new mongoose.Schema(
+  {
     itemId: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     price: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     quantity: {
-        type: Number
+      type: Number,
     },
     status: {
-        type: String,
-        enum: ["Not available", "Available"],
-        default: "Available"
+      type: String,
+      enum: ["Not available", "Available"],
+      default: "Available",
     },
     category: {
-        type: String,
-        required: true,
-        enum: ["Meal", "Bread", "Snack", "Beverage"]
+      type: String,
+      required: true,
+      enum: ["Meal", "Bread", "Snack", "Beverage"],
     },
     isVeg: {
-        type: Boolean,
-        required: true
+      type: Boolean,
+      required: true,
     },
     imageUrl: {
-        type: String,
-        required: true
-    }
-}, {
-    timestamps: true
-});
+      type: String,
+      required: true,
+    },
+    isRemoved: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 export default mongoose.model("Item", itemSchema);
-
