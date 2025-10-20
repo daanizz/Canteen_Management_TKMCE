@@ -1,49 +1,86 @@
-// Get amount from query string
-    const params = new URLSearchParams(window.location.search);
-    const amount = params.get("amount");
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const amount = params.get("amount");
+  const orderId = params.get("orderId");
 
-    if (!amount) {
-      document.getElementById("payment-box").innerHTML = "<p>Invalid payment request.</p>";
-    } else {
-      const upiId = "nezilshah@okicici";  // your UPI ID
-      const payeeName = "TKM Canteen";       // your name / business
-      const upiLink = `upi://pay?pa=${upiId}&pn=${payeeName}&am=${amount}&cu=INR`;
+  const container = document.getElementById("payment-box");
 
-      const container = document.getElementById("payment-box");
-      container.innerHTML = `
-        <p><b>Pay ₹${amount} using UPI</b></p>
-        <div id="qr-code" class="qr-box"></div>
-        <br>
-        <a href="${upiLink}" class="pay-btn">Pay with UPI App</a>
-        <a href="#" id="finish-btn" class="paid-btn">Finshed Payment</a>
-        <a href="menu.html" class="cncl-btn">Cancel Order</a>
-      `;
-
-      // Generate QR in the div
-      new QRCode(document.getElementById("qr-code"), {
-        text: upiLink,
-        width: 250,
-        height: 250
-      });
-    }
-    document.getElementById("finish-btn").addEventListener("click", function () {
-  // Get pending order
-  const pendingOrder = JSON.parse(sessionStorage.getItem("pendingOrder"));
-  
-  if (pendingOrder) {
-    // Load existing order history
-    const orderHistory = JSON.parse(localStorage.getItem("orderHistory")) || [];
-    
-    // Push new order into history
-    orderHistory.push(pendingOrder);
-
-    // Save back to localStorage
-    localStorage.setItem("orderHistory", JSON.stringify(orderHistory));
-
-    // Clear pending order
-    sessionStorage.removeItem("pendingOrder");
+  if (!amount || !orderId) {
+    container.innerHTML = "<p>Invalid payment request.</p>";
+    return;
   }
 
-  // Redirect to order history page
-  window.location.href = "order_history.html";
+  const upiId = "nezilshah@okicici";
+  const payeeName = "TKM Canteen";
+  const upiLink = `upi://pay?pa=${upiId}&pn=${payeeName}&am=${amount}&cu=INR`;
+
+  container.innerHTML = `
+    <div class="payment-info">
+      <p><b>Pay ₹${amount}</b></p>
+      <p>Scan the QR code or click the button below</p>
+    </div>
+    <div id="qr-code" class="qr-box"></div>
+    <div class="payment-buttons">
+      <a href="${upiLink}" class="pay-btn">
+        <i class="fas fa-mobile-alt"></i> Pay with UPI App
+      </a>
+      <button id="finish-btn" class="paid-btn">
+        <i class="fas fa-check"></i> I've Completed Payment
+      </button>
+      <a href="menu.html" class="cncl-btn">
+        <i class="fas fa-times"></i> Cancel Order
+      </a>
+    </div>
+  `;
+
+  // Generate QR code
+  new QRCode(document.getElementById("qr-code"), {
+    text: upiLink,
+    width: 200,
+    height: 200,
+  });
+
+  // Handle payment completion
+  document
+    .getElementById("finish-btn")
+    .addEventListener("click", async function () {
+      try {
+        // Update order status to paid - use full URL
+        const response = await fetch(
+          `http://localhost:4500/api/orders/${orderId}/status`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "preparing" }),
+          }
+        );
+
+        if (!response.ok) throw new Error("Failed to update order status");
+
+        // Store in order history
+        const pendingOrder = JSON.parse(sessionStorage.getItem("pendingOrder"));
+        if (pendingOrder) {
+          const orderHistory =
+            JSON.parse(localStorage.getItem("orderHistory")) || [];
+          orderHistory.push({
+            ...pendingOrder,
+            isPaid: true,
+            paidAt: new Date().toISOString(),
+          });
+          localStorage.setItem("orderHistory", JSON.stringify(orderHistory));
+          sessionStorage.removeItem("pendingOrder");
+        }
+
+        // Clear cart
+        localStorage.removeItem("cart");
+
+        // Redirect to order confirmation
+        window.location.href = `order_history.html?orderId=${orderId}`;
+      } catch (error) {
+        console.error("Error completing payment:", error);
+        alert(
+          "There was an issue completing your payment. Please contact support."
+        );
+      }
+    });
 });

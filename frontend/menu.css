@@ -219,3 +219,18 @@ header h1 {
   background: #ccc !important;
   cursor: not-allowed !important;
 }
+
+
+.logout-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+

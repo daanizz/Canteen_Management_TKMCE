@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,8 +24,8 @@
       e.preventDefault();
 
       const data = {
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value
+        email: document.getElementById("email").value.trim(),
+        password: document.getElementById("password").value.trim()
       };
 
       try {
@@ -34,14 +36,18 @@
         });
 
         const result = await res.json();
-        document.getElementById("loginMessage").innerText = result.message;
+        document.getElementById("loginMessage").innerText = result.message || "";
 
-        if (res.ok) {
-          // Save token to localStorage
+        if (res.ok && result.user && result.token) {
+          // Store user + token
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
 
-          setTimeout(() => window.location.href = "menu.html", 1000);
+          // Store activity start
+          const activity = { lastLogin: new Date().toISOString(), lastPage: "login" };
+          localStorage.setItem("userActivity", JSON.stringify(activity));
+
+          setTimeout(() => window.location.href = "menu.html", 800);
         }
       } catch (err) {
         document.getElementById("loginMessage").innerText = "Error: " + err.message;

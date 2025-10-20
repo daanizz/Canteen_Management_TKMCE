@@ -1,4 +1,7 @@
+
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,23 +10,21 @@
   <link rel="stylesheet" href="menu.css" />
 </head>
 <body>
-  <header>
+  <header class="menu-header">
     <h1>MENU</h1>
-    <div class="header-divider"></div>
+    <div class="user-info">
+      <span id="welcomeUser"></span>
+    </div>
+    <div class="header-buttons">
+      <button class="history-btn" onclick="window.location.href='order_history.html'">Order History</button>
+      <button class="cart-btn" onclick="window.location.href='cart.html'">🛒 View Cart (<span id="cart-count">0</span>)</button>
+    </div>
   </header>
 
-  <button class="history-btn" onclick="window.location.href='order_history.html'">
-   Order History
-  </button>
+  <button class="logout-btn" onclick="logout()" style="margin: 5%;">Logout</button>
 
-  <button class="cart-btn" onclick="window.location.href='cart.html'">
-    🛒 View Cart (<span id="cart-count">0</span>)
-  </button>
-
-  <div class="menu-container">
-    <!-- Menu items will be dynamically inserted here -->
-  </div>
-
+  <div class="menu-container"></div>
+  
   <script src="menu.js"></script>
 </body>
 </html>

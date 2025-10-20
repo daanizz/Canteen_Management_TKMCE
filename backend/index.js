@@ -21,12 +21,11 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use("/api/auth", authRoutes);
-
 // API Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/items", itemRoutes);
 app.use("/api/user", userRoutes);
-app.use("/admin", adminRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/orders", orderRoutes);
 
 // Static files
@@ -41,20 +40,17 @@ app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/admin.html"));
 });
 
+app.get("/order_history", (req, res) => {
+  console.log("📄 Serving order_history.html");
+  res.sendFile(path.join(__dirname, "../frontend/order_history.html"));
+});
+
 app.get("/", (req, res) => {
-  res.send(
-    "<h1><marquee behavior=scroll direction=left>Hello This is canteen Management System For TKMCE- by group-16 </marquee></h1>"
-  );
+  res.sendFile(path.join(__dirname, "../frontend/login.html"));
 });
 
 const PORT = process.env.PORT || 4500;
 app.listen(PORT, () => {
   MongoConnection();
-  console.log(`Server running on: http://localhost:${PORT}/signup`);
   console.log(`Server running on: http://localhost:${PORT}`);
-  console.log(`User Dashboard: http://localhost:${PORT}/menu`);
-  console.log(`Admin Portal: http://localhost:${PORT}/admin`);
-  console.log(`API: http://localhost:${PORT}/api/items`);
-  console.log(` Auth API: http://localhost:${PORT}/api/auth`);
-  console.log("MONGO_URI =", process.env.MONGO_URI);
 });

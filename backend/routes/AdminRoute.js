@@ -4,15 +4,19 @@ import {
   getOrderDetails,
   viewAllReviews,
   viewAllOrders,
+  cancelOrder,
+  updateOrderStatus,
 } from "../controllers/AdminFunctions.js";
 import { Router } from "express";
 
 const router = Router();
 
 router.post("/addItem", addItem);
-router.post("/updateItem/:id", updateItemStatus);
+router.put("/updateItem/:id", updateItemStatus);
 router.get("/orderdetails/:id", getOrderDetails);
-router.post("/getOrders", viewAllOrders);
+router.get("/getOrders", viewAllOrders);
 router.get("/getReviews", viewAllReviews);
+router.put("/cancelOrder/:id", cancelOrder);
+router.put("/updateOrderStatus/:id", updateOrderStatus);
 
 export default router;

@@ -1,3 +1,4 @@
+// export default router;
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -5,30 +6,33 @@ import User from "../models/userModel.js";
 
 const router = express.Router();
 
-// SIGNUP (Create Account)
+// SIGNUP
 router.post("/signup", async (req, res) => {
   try {
-    const { name, email, password, admissionNumber, role, department } = req.body;
+    const { name, email, password, admissionNumber, role, department } =
+      req.body;
 
-    // Check if user exists
+    if (!name || !email || !password)
+      return res.status(400).json({ message: "Missing required fields" });
+
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: "User already exists" });
+    if (existingUser)
+      return res.status(400).json({ message: "User already exists" });
 
-    // Create new user (password will be hashed automatically by pre-save hook)
     const newUser = new User({
       name,
       email,
-      hashedPassword: password,  // IMPORTANT: assign plain password here, hook will hash
+      hashedPassword: password, // pre-save hook hashes this
       admissionNumber,
       role,
-      department
+      department,
     });
 
     await newUser.save();
-
-    res.status(201).json({ message: "Account created successfully!" });
+    return res.status(201).json({ message: "Account created successfully!" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Signup Error:", err);
+    return res.status(500).json({ message: err.message || "Server error" });
   }
 });
 
@@ -36,23 +40,20 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Find user
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Compare password
     const isMatch = await bcrypt.compare(password, user.hashedPassword);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
-    // Create JWT token
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    res.json({
+    res.status(200).json({
       message: "Login successful",
       token,
       user: {
@@ -61,8 +62,19 @@ router.post("/login", async (req, res) => {
         email: user.email,
         role: user.role,
         department: user.department,
-      }
+      },
     });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// FETCH USER BY ID
+router.post("/user", async (req, res) => {
+  try {
+    const { user_id } = req.body;
+    const user = await User.findById(user_id);
+    res.status(200).json({ message: "User found", user });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -14,7 +14,7 @@ const userModel = new mongoose.Schema(
     hashedPassword: {
       type: String,
       required: true,
-      unique: true,
+      // unique: true,
     },
     admissionNumber: {
       type: Number,
@@ -61,4 +61,4 @@ userModel.pre("save", async function (next) {
   }
 });
 
-export default mongoose.model("User", userModel);
+export default mongoose.model("users", userModel);
