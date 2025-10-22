@@ -34,68 +34,7 @@
             <h2 class="fw-bold border-bottom pb-2 mb-4">Live Orders</h2>
             <div class="row" id="orders-grid">
                 <!-- Card 1 -->
-                <div class="col-lg-4 col-md-6 mb-4 order-container">
-                    <div class="card order-card h-100">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            Order ID #101
-                            <span class="badge bg-primary">New</span>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3"><i class="fas fa-list-check me-2"></i>Items Ordered</h5>
-                            <ul class="list-group list-group-flush mb-3">
-                                <li class="list-group-item d-flex justify-content-between"><span>Porotta</span><span>x 2</span></li>
-                                <li class="list-group-item d-flex justify-content-between"><span>Coffee</span><span>x 1</span></li>
-                                <li class="list-group-item d-flex justify-content-between"><span>Chicken Curry</span><span>x 2</span></li>
-                            </ul>
-                            <p class="text-end total-price mt-3">Total: ₹180.00</p>
-                        </div>
-                        <div class="card-footer d-grid gap-2 d-sm-flex justify-content-end">
-                            <button class="btn btn-success" onclick="markReady(this)"><i class="fas fa-check-circle me-2"></i>Ready to Pickup</button>
-                            <button class="btn btn-danger" onclick="cancelOrder(this)"><i class="fas fa-times-circle me-2"></i>Cancel</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card 2 -->
-                <div class="col-lg-4 col-md-6 mb-4 order-container">
-                    <div class="card order-card h-100" style="border-left-color: #ffc107;">
-                        <div class="card-header d-flex justify-content-between align-items-center" style="color: #ffc107;">
-                            Token #102
-                            <span class="badge bg-warning text-dark">Priority</span>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3"><i class="fas fa-list-check me-2"></i>Items Ordered</h5>
-                            <ul class="list-group list-group-flush mb-3">
-                                <li class="list-group-item d-flex justify-content-between"><span>Cool Boost</span><span>x 3</span></li>
-                                <li class="list-group-item d-flex justify-content-between"><span>Chicken Biriyani</span><span>x 1</span></li>
-                            </ul>
-                            <p class="text-end total-price mt-3">Total: ₹150.00</p>
-                        </div>
-                        <div class="card-footer d-grid gap-2 d-sm-flex justify-content-end">
-                            <button class="btn btn-success" onclick="markReady(this)"><i class="fas fa-check-circle me-2"></i>Ready to Pickup</button>
-                            <button class="btn btn-danger" onclick="cancelOrder(this)"><i class="fas fa-times-circle me-2"></i>Cancel</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card 3 -->
-                <div class="col-lg-4 col-md-6 mb-4 order-container">
-                    <div class="card order-card h-100">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            Token #103
-                            <span class="badge bg-primary">New</span>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title mb-3"><i class="fas fa-list-check me-2"></i>Items Ordered</h5>
-                            <ul class="list-group list-group-flush mb-3">
-                                <li class="list-group-item d-flex justify-content-between"><span>Meals</span><span>x 2</span></li>
-                                <li class="list-group-item d-flex justify-content-between"><span>Fish Fry</span><span>x 1</span></li>
-                            </ul>
-                            <p class="text-end total-price mt-3">Total: ₹220.00</p>
-                        </div>
-                        <div class="card-footer d-grid gap-2 d-sm-flex justify-content-end">
-                            <button class="btn btn-success" onclick="markReady(this)"><i class="fas fa-check-circle me-2"></i>Ready to Pickup</button>
-                            <button class="btn btn-danger" onclick="cancelOrder(this)"><i class="fas fa-times-circle me-2"></i>Cancel</button>
-                        </div>
-                    </div>
+                
                 </div>
             </div>
         </div>
@@ -109,6 +48,14 @@
                 
             </div>
         </div>
+
+        <hr class="my-5"> 
+        <div>
+           <h2 class="fw-bold border-bottom pb-2 mb-4">Completed Orders</h2>
+        <div class="row" id="completed-grid">
+            
+        </div>
+</div>
     </main>
 
     

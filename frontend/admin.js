@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:4500/admin"; // Adjust if backend hosted elsewhere
+const API_URL = "http://localhost:4500/api/admin"; // Adjust if backend hosted elsewhere
 
 document.addEventListener("DOMContentLoaded", fetchOrders);
 
@@ -6,6 +6,7 @@ async function fetchOrders() {
   try {
     const response = await fetch(`${API_URL}/getOrders`);
     const data = await response.json();
+    console.log(data);
 
     if (!response.ok) {
       document.getElementById(
@@ -23,9 +24,11 @@ async function fetchOrders() {
 function renderOrders(orders) {
   const ordersGrid = document.getElementById("orders-grid");
   const pickupGrid = document.getElementById("pickup-grid");
+  const completedGrid = document.getElementById("completed-grid"); // 1. Get new grid
 
   ordersGrid.innerHTML = "";
   pickupGrid.innerHTML = "";
+  completedGrid.innerHTML = ""; // 2. Clear new grid
 
   orders.forEach((order) => {
     const orderHTML = `
@@ -59,9 +62,19 @@ function renderOrders(orders) {
         </div>
       </div>`;
 
-    if (order.status === "Ready") pickupGrid.innerHTML += orderHTML;
-    else if (order.status === "New" || order.status === "Priority")
+    // 3. Update sorting logic
+    if (order.status === "Ready") {
+      pickupGrid.innerHTML += orderHTML;
+    } else if (order.status === "Completed") {
+      completedGrid.innerHTML += orderHTML;
+    } else if (
+      order.status === "New" ||
+      order.status === "Priority" ||
+      order.status === "preparing" // Includes fix from previous step
+    ) {
       ordersGrid.innerHTML += orderHTML;
+    }
+    // Cancelled orders will not be shown
   });
 }
 
@@ -73,6 +86,10 @@ function getBadgeClass(status) {
       return "bg-warning text-dark";
     case "Cancelled":
       return "bg-danger";
+    case "Completed": // 4. Add new case
+      return "bg-secondary";
+    case "preparing": // Handle 'preparing' status
+      return "bg-info text-dark";
     default:
       return "bg-primary";
   }
@@ -84,8 +101,10 @@ function renderButtons(status) {
               <i class="fas fa-clipboard-check me-2"></i>Complete Order
             </button>`;
   }
+  // This logic already correctly shows no buttons for "Completed"
   if (status === "Cancelled" || status === "Completed") return "";
 
+  // This button logic works for "New", "Priority", and "preparing"
   return `
     <button class="btn btn-success" onclick="markReady(this)">
       <i class="fas fa-check-circle me-2"></i>Ready to Pickup
@@ -95,7 +114,7 @@ function renderButtons(status) {
     </button>`;
 }
 
-// === Actions ===
+// === Actions (No changes needed below) ===
 async function markReady(button) {
   const id = button.closest(".order-container").dataset.id;
   await updateOrderStatus(id, "Ready");
