@@ -1,34 +1,62 @@
-
+// Inside ../controllers/AdminFunctions.js
+import crypto from 'crypto';
+// ... other imports
 import itemModel from "../models/itemModel.js";
 import orderModel from "../models/orderModel.js";
 import reviewModel from "../models/reviewModel.js";
 
-// ✅ Add Item
+// ✅ Add Item (UPDATED FOR FILE UPLOAD)
+// ✅ Add Item (UPDATED TO INCLUDE itemId)
+// ✅ Add Item (UPDATED TO USE A NUMBER FOR itemId)
 export const addItem = async (req, res) => {
   try {
-    const { name, price, category, isVeg, imageUrl } = req.body;
-    if (!name || !price || !category || isVeg === undefined || !imageUrl) {
-      return res.status(400).json({ message: "All fields are required!" });
+    // 1. Text data is in req.body
+    const { name, price, category, isVeg } = req.body;
+
+    // 2. The file's info is in req.file (from multer)
+    if (!req.file) {
+      return res.status(400).json({ message: "Image file is required" });
     }
 
+    // 3. This is the path to save in the database
+    const imageUrl = `pictures/${req.file.filename}`;
+
+    // 4. Basic validation (checking text fields)
+    if (!name || !price || !category || isVeg === undefined) {
+      return res.status(400).json({ message: "All text fields are required!" });
+    }
+
+    // 5. Your existing item check
     const existingItem = await itemModel.findOne({ name: name.toLowerCase() });
     if (existingItem) {
       return res.status(400).json({ message: "Item already exists!" });
     }
 
+    // --- FIX: Generate a unique Number ---
+    // Using Date.now() is a simple way to get a unique number
+    const itemId = Date.now(); 
+    // --- End of fix ---
+
+    // 6. Create new item
     await itemModel.create({
+      itemId: itemId, // <-- Provide the required Number
       name: name.toLowerCase(),
       price,
       category,
-      isVeg,
-      imageUrl,
+      isVeg: isVeg === 'true', // FormData sends booleans as strings
+      imageUrl: imageUrl, // Use the new path from the uploaded file
     });
 
     return res.status(200).json({ message: "Item added successfully!" });
   } catch (error) {
+    // Log the full error for better debugging
+    console.error("Error in addItem:", error);
     return res.status(500).json({ message: error.message });
   }
 };
+
+// ... your other controller functions (updateItemStatus, etc.) ...
+// (No changes needed to the functions below)
 
 // ✅ Update Item Status
 export const updateItemStatus = async (req, res) => {
@@ -80,7 +108,7 @@ export const viewAllReviews = async (req, res) => {
   try {
     const reviews = await reviewModel.find();
     if (!reviews.length) {
-      return res.status(404).json({ message: "No reviews found" });
+      return res.status(4).json({ message: "No reviews found" });
     }
     res.status(200).json({ reviews, message: "success" });
   } catch (error) {
