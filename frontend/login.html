@@ -1,27 +1,45 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Canteen Management</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="auth-container">
-    <h1>Login</h1>
+    <h1>Canteen Portal Login</h1>
+    <p class="subtitle">Welcome back! Please enter your credentials.</p>
+    
     <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" required />
+      </div>
       <button type="submit">Login</button>
     </form>
-    <p>Don’t have an account? <a href="signup.html">Create one</a></p>
-    <div id="loginMessage"></div>
+    
+    <p class="auth-link">Don’t have an account? <a href="signup.html">Create one</a></p>
+    
+    <div id="loginMessage" class="message"></div>
   </div>
 
   <script>
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+      
+      const messageEl = document.getElementById("loginMessage");
+      messageEl.textContent = ""; // Clear previous messages
+      messageEl.className = "message"; // Reset classes
 
       const data = {
         email: document.getElementById("email").value.trim(),
@@ -36,9 +54,13 @@
         });
 
         const result = await res.json();
-        document.getElementById("loginMessage").innerText = result.message || "";
+        const message = result.message || (res.ok ? "Login successful!" : "An error occurred.");
 
         if (res.ok && result.user && result.token) {
+          // Success
+          messageEl.textContent = message;
+          messageEl.classList.add("success");
+
           // Store user + token
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
@@ -47,10 +69,17 @@
           const activity = { lastLogin: new Date().toISOString(), lastPage: "login" };
           localStorage.setItem("userActivity", JSON.stringify(activity));
 
-          setTimeout(() => window.location.href = "menu.html", 800);
+          setTimeout(() => window.location.href = "menu.html", 1000);
+        } else {
+          // Handle server-side error (e.g., wrong password)
+          messageEl.textContent = message;
+          messageEl.classList.add("error");
         }
       } catch (err) {
-        document.getElementById("loginMessage").innerText = "Error: " + err.message;
+        // Handle network or script error
+        messageEl.textContent = "A network error occurred. Please try again.";
+        messageEl.classList.add("error");
+        console.error("Login failed:", err);
       }
     });
   </script>

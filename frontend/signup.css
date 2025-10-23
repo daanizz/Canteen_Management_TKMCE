@@ -1,4 +1,4 @@
-/* --- Root Variables for easy theme management --- */
+/* --- Root Variables --- */
 :root {
   --primary-color: #007bff;
   --primary-hover: #0056b3;
@@ -14,9 +14,6 @@
 }
 
 /* --- Global & Body Styles --- */
-/* --- Global & Body Styles --- */
-/* --- Global & Body Styles --- */
-/* --- Global & Body Styles --- */
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -24,22 +21,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* <-- CHANGED from height to min-height */
+  min-height: 100vh;
   color: var(--text-dark);
-  padding: 2rem 1rem; /* <-- ADDED for breathing room */
-  box-sizing: border-box; /* <-- ADDED for better layout calculation */
-}/* --- Global & Body Styles --- */
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: var(--bg-light);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh; /* <-- CHANGED from height to min-height */
-  color: var(--text-dark);
-  padding: 2rem 1rem; /* <-- ADDED for breathing room */
-  box-sizing: border-box; /* <-- ADDED for better layout calculation */
+  padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
 /* --- Auth Container (Card) --- */
@@ -81,8 +66,7 @@ body {
   color: var(--text-light);
 }
 
-/* --- Form Elements --- */
-/* --- Replace with this: --- */
+/* --- Form Input Elements --- */
 form input[type="text"],
 form input[type="email"],
 form input[type="password"] {
@@ -92,24 +76,61 @@ form input[type="password"] {
   border: 1px solid var(--border-color);
   font-size: 1rem;
   font-family: 'Poppins', sans-serif;
-  box-sizing: border-box; /* Important for padding to work well */
+  box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Also update this selector for placeholders */
 form input[type="text"]::placeholder,
 form input[type="email"]::placeholder,
 form input[type="password"]::placeholder {
   color: #bbb;
 }
 
-/* And update this selector for focus */
 form input[type="text"]:focus,
 form input[type="email"]:focus,
 form input[type="password"]:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* --- Style for Select Dropdowns --- */
+form select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  background-color: var(--white);
+  color: var(--text-dark);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23555' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  background-size: 16px 16px;
+}
+
+form select:invalid {
+  color: #bbb;
+}
+
+form select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* --- Utility for side-by-side form fields --- */
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row .form-group {
+  flex: 1; 
+  min-width: 0;
 }
 
 /* --- Button --- */
@@ -159,7 +180,7 @@ a:hover {
   margin-top: 1rem;
   font-size: 0.9rem;
   font-weight: 500;
-  height: 1.2em; /* Reserve space to prevent layout jump */
+  height: 1.2em;
 }
 
 .message.success {
@@ -174,45 +195,4 @@ a:hover {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- Style for Select Dropdowns --- */
-form select {
-  width: 100%;
-  padding: 14px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  font-size: 1rem;
-  font-family: 'Poppins', sans-serif;
-  box-sizing: border-box;
-  background-color: var(--white);
-  color: var(--text-dark);
-  appearance: none; /* Remove default system arrow */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23555' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.9rem center;
-  background-size: 16px 16px;
-}
-
-/* Set placeholder color for the disabled option */
-form select:invalid {
-  color: #bbb;
-}
-
-form select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-}
-
-/* --- Utility for side-by-side form fields --- */
-.form-row {
-  display: flex;
-  gap: 1rem; /* Space between the two elements */
-}
-
-/* Make form groups inside a row take up equal space */
-.form-row .form-group {
-  flex: 1; 
-  min-width: 0; /* Prevents overflow issues */
 }

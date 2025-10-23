@@ -2,75 +2,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Signup - Canteen Management</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - Canteen Management</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="signup.css">
 </head>
 <body>
   <div class="auth-container">
     <h1>Create Account</h1>
+    <p class="subtitle">Fill in the details below to register.</p>
+    
     <form id="signupForm">
-      <input type="text" id="name" placeholder="Full Name" required />
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <input type="number" id="admissionNumber" placeholder="Admission Number" required />
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="John Doe" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required />
+      </div>
+
+      <div class="form-group">
+        <label for="admissionNumber">Admission Number</label>
+        <input type="text" id="admissionNumber" placeholder="e.g., 9012" required />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="role">Select Role</label>
+          <select id="role" required>
+  <option value="" disabled selected>Select Role</option>
+  <option value="Student">Student</option>
+  <option value="Staff">Staff</option>
+  <option value="Admin">Admin</option>
+</select>
+
+<select id="department" required>
+  <option value="" disabled selected>Select Dept.</option>
+  <option value="CSE">CSE</option>
+  <option value="ECE">ECE</option>
+  <option value="EEE">EEE</option>
+  <option value="Mechanical">Mechanical</option>
+  <option value="Civil">Civil</option>
+</select>
+        </div>
+      </div>
       
-      <select id="role" required>
-        <option value="">Select Role</option>
-        <option value="Student">Student</option>
-        <option value="Accountant">Accountant</option>
-        <option value="professor">Professor</option>
-        <option value="Guest">Guest</option>
-      </select>
-
-      <select id="department" required>
-        <option value="">Select Department</option>
-        <option value="CSE">CSE</option>
-        <option value="ECE">ECE</option>
-        <option value="MECH">MECH</option>
-        <option value="EEE">EEE</option>
-        <option value="CIVIL">CIVIL</option>
-        <option value="CHEM">CHEM</option>
-        <option value="ARCH">ARCH</option>
-        <option value="SPORTS">SPORTS</option>
-        <option value="MATH">MATH</option>
-        <option value="PHYSICS">PHYSICS</option>
-        <option value="OTHER">OTHER</option>
-      </select>
-
       <button type="submit">Sign Up</button>
     </form>
-    <p>Already have an account? <a href="login.html">Login here</a></p>
-    <div id="signupMessage"></div>
+    
+    <p class="auth-link">Already have an account? <a href="login.html">Login here</a></p>
+    
+    <div id="signupMessage" class="message"></div>
   </div>
 
   <script>
     document.getElementById("signupForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+      
+      const messageEl = document.getElementById("signupMessage");
+      messageEl.textContent = "";
+      messageEl.className = "message";
 
       const data = {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
+        Fullname: document.getElementById("fullName").value.trim(),
+        email: document.getElementById("email").value.trim(),
         password: document.getElementById("password").value,
-        admissionNumber: document.getElementById("admissionNumber").value,
+        admissionNumber: document.getElementById("admissionNumber").value.trim(),
         role: document.getElementById("role").value,
         department: document.getElementById("department").value
       };
 
+      // Check if a role or department was selected
+      if (!data.role || !data.department) {
+        messageEl.textContent = "Please select a role and department.";
+        messageEl.classList.add("error");
+        return;
+      }
+
       try {
-        const res = await fetch("http://localhost:4500/api/auth/signup", {
+        const res = await fetch("/api/auth/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         });
 
         const result = await res.json();
-        document.getElementById("signupMessage").innerText = result.message;
-
+        const message = result.message || (res.ok ? "Registration successful!" : "An error occurred.");
+        
         if (res.ok) {
-          setTimeout(() => window.location.href = "login.html", 1500);
+          messageEl.textContent = message + " Redirecting to login...";
+          messageEl.classList.add("success");
+          setTimeout(() => window.location.href = "login.html", 2000);
+        } else {
+          messageEl.textContent = message;
+          messageEl.classList.add("error");
         }
       } catch (err) {
-        document.getElementById("signupMessage").innerText = "Error: " + err.message;
+        messageEl.textContent = "A network error occurred. Please try again.";
+        messageEl.classList.add("error");
+        console.error("Signup failed:", err);
       }
     });
   </script>
