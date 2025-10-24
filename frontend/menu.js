@@ -38,7 +38,7 @@ function getCartKey() {
   return user && user.email ? `cart_${user.email}` : "cart_guest";
 }
 
-// --- Quantity controls ---
+// --- Quantity Controls ---
 function increaseQty(button) {
   const qtySpan = button.previousElementSibling;
   qtySpan.textContent = parseInt(qtySpan.textContent) + 1;
@@ -87,15 +87,19 @@ function updateCartCount() {
 // --- Fetch Menu ---
 async function fetchMenuItems() {
   try {
-    const res = await fetch("/api/items");
+    // Make sure this matches your backend API route
+    const res = await fetch("http://localhost:4500/api/items");
     if (!res.ok) throw new Error("Failed to fetch menu");
     const items = await res.json();
-    renderMenuItems(items);
+
+    // Filter out items that are permanently removed
+    const visibleItems = items.filter((item) => !item.isRemoved);
+
+    renderMenuItems(visibleItems); // Pass the filtered list
   } catch (err) {
     console.error(err);
-    document.querySelector(
-      ".menu-container"
-    ).innerHTML = `<p>⚠️ Could not load menu.</p>`;
+    document.querySelector(".menu-container").innerHTML =
+      `<p>⚠️ Could not load menu.</p>`;
   }
 }
 
@@ -114,20 +118,40 @@ function renderMenuItems(items) {
     items
       .filter((i) => i.category === cat)
       .forEach((item) => {
+        const isAvailable = item.status === "Available";
+        const statusClass = isAvailable ? "" : "not-available";
+
+        // Dynamically generate controls based on availability
+        const controlsHTML = isAvailable
+          ? `
+            <div class="quantity-controls">
+              <button onclick="decreaseQty(this)">−</button>
+              <span class="qty-value">0</span>
+              <button onclick="increaseQty(this)">+</button>
+            </div>
+            <button onclick="addToCart(this)">Add to Cart</button>
+          `
+          : `
+            <div class="quantity-controls disabled">
+              <button disabled>−</button>
+              <span class="qty-value">0</span>
+              <button disabled>+</button>
+            </div>
+            <button class="not-available-btn" disabled>Not Available</button>
+          `;
+
+        // Use an API-relative URL or absolute URL for images
+        const imageSrc = item.imageUrl?.startsWith("http")
+          ? item.imageUrl
+          : `http://localhost:4500/${item.imageUrl}`;
+
         container.innerHTML += `
-        <div class="menu-item">
-          <img src="${
-            item.imageUrl || "https://via.placeholder.com/150"
-          }" alt="${item.name}" />
-          <h3>${item.name}</h3>
-          <p>₹${item.price}</p>
-          <div class="quantity-controls">
-            <button onclick="decreaseQty(this)">−</button>
-            <span class="qty-value">0</span>
-            <button onclick="increaseQty(this)">+</button>
-          </div>
-          <button onclick="addToCart(this)">Add to Cart</button>
-        </div>`;
+          <div class="menu-item ${statusClass}">
+            <img src="${imageSrc || "https://via.placeholder.com/150"}" alt="${item.name}" />
+            <h3>${item.name}</h3>
+            <p>₹${item.price}</p>
+            ${controlsHTML}
+          </div>`;
       });
 
     menuContainer.appendChild(section);

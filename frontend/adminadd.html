@@ -57,7 +57,12 @@
                                 </div>
                                 <div class="col-md-12">
                                     <label for="itemCategory" class="form-label">Category</label>
-                                    <input type="text" class="form-control" id="itemCategory" placeholder="e.g., Meal, Snack, Beverage" required>
+                                        <select class="form-select" id="itemCategory" required>
+                                            <option value="" selected disabled>Choose...</option>
+                                            <option value="Snack">Snacks</option>
+                                            <option value="Beverage">Beverages</option>
+                                            <option value="Meal">Meal</option>
+                                        </select>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="itemImage" class="form-label">Item Image</label>

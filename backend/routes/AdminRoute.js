@@ -11,6 +11,7 @@ import { Router } from "express";
 import multer from "multer";
 import path, { dirname }from "path";   // Import 'dirname'
 import { fileURLToPath } from "url"; // Import 'fileURLToPath'
+import Item from "../models/itemModel.js";
 
 // --- ES Module fix for __dirname ---
 const __filename = fileURLToPath(import.meta.url);
@@ -54,3 +55,33 @@ router.put("/updateOrderStatus/:id", updateOrderStatus);
 
 export default router;
 
+// PUT /api/admin/items/:id/status
+// Updates the availability status of a single menu item
+router.put("/items/:id/status", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body; // Expects { "status": "Available" } or { "status": "Not available" }
+
+    if (!["Available", "Not available"].includes(status)) {
+      return res.status(400).json({ message: "Invalid status value." });
+    }
+
+    const item = await Item.findById(id); // 'Item' is your Mongoose model
+
+    if (!item) {
+      return res.status(404).json({ message: "Item not found." });
+    }
+
+    item.status = status;
+    await item.save();
+
+    res.json({ message: "Status updated successfully", item });
+  } catch (error) {
+    console.error("Error updating item status:", error);
+    res.status(500).json({ message: "Server error updating status." });
+  }
+});
+
+// You also need a route to GET all items for the admin page
+// GET /api/items (You probably already have this for menu.js)
+// Just ensure it's accessible to the admin page.

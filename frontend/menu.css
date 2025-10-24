@@ -234,3 +234,35 @@ header h1 {
 }
 
 
+/* Styles for 'Not Available' items on the user menu */
+
+.menu-item.not-available {
+    position: relative;
+    background-color: #f1f1f1;
+    pointer-events: none; /* Disables all clicks on the card */
+}
+
+.menu-item.not-available img {
+    filter: grayscale(100%);
+    opacity: 0.5;
+}
+
+.menu-item.not-available h3,
+.menu-item.not-available p {
+    color: #999;
+}
+
+/* Style for the "Not Available" button */
+.not-available-btn {
+    background-color: #ccc;
+    color: #777;
+    border: none;
+    cursor: not-allowed;
+}
+
+/* Style for disabled quantity controls */
+.quantity-controls.disabled button {
+    background-color: #e0e0e0;
+    color: #aaa;
+    cursor: not-allowed;
+}
